@@ -1,0 +1,59 @@
+import {useState, useEffect} from "react"
+import {useWeather} from "./useWeather"
+import {useWikiEntry} from "./useWikiEntry"
+
+export function useTripPlanner(city) {
+    const [loading, setLoading] = useState(false)
+    const [apiData, setApiData] = useState({
+        wikiDescription: null,
+        currentWeather: null
+    })
+    const [error, setError] = useState(null)
+    const weatherPromise = useWeather(city)
+    const wikiPromise = useWikiEntry(city)
+
+
+    /* TODO:
+        there could be an issue where a user selects a city (selection A),
+        then quickly selects another (selection B),
+        possibilities: 
+            A resolves (flashes unwanted content) then B resolves,
+            B resolves (displays desired content) then A resolves (setting undesired content)
+
+        initial solution:
+            disable the selection control when the loading boolean is true
+    */
+    useEffect(() => {
+        if (city?.value == null) {
+            return
+        }
+
+        if (loading) {
+            return
+        }
+
+        setLoading(true)
+
+        Promise.all([
+            weatherPromise(),
+            wikiPromise()
+        ]).catch(err => {
+            console.error(err)
+            setLoading(false)
+            setError("oops! unable to find travel plan for: " + city?.value)
+        }).then(([currentWeather, wikiDescription]) => {
+            setLoading(false)
+            setApiData({ currentWeather, wikiDescription })
+        })
+
+
+
+    }, [city])
+
+    return {
+        loading,
+        apiData,
+        error
+    }
+}
+
