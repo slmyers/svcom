@@ -3,6 +3,7 @@ import {useWeather} from "./useWeather"
 import {useWikiEntry} from "./useWikiEntry"
 
 export function useTripPlanner(city) {
+    // TODO: refactor to useReducer
     const [loading, setLoading] = useState(false)
     const [apiData, setApiData] = useState({
         wikiDescription: null,
@@ -25,10 +26,11 @@ export function useTripPlanner(city) {
     */
     useEffect(() => {
         if (city?.value == null) {
+            setLoading(false)
             setError(null)
             setApiData({
                 wikiDescription: null,
-                currentWeather: null
+                weather: null
             })
             return
         }
@@ -42,13 +44,14 @@ export function useTripPlanner(city) {
         Promise.all([
             weatherPromise(),
             wikiPromise()
-        ]).then(([currentWeather, wikiDescription]) => {
+        ]).then(([weather, wikiDescription]) => {
             setLoading(false)
-            setApiData({ currentWeather, wikiDescription })
+            setApiData({ weather, wikiDescription })
         }).catch(err => {
             console.error(err)
             setLoading(false)
             setError("oops! unable to find travel plan for: " + city?.display)
+            setApiDate({ weather: null, wikiDescription: null})
         })
 
 

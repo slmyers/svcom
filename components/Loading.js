@@ -9,7 +9,7 @@ export function Loading({isLoading}) {
     const { backdrop } = useStyles()
 
     return (
-        <Backdrop open={true}>
+        <Backdrop open={true} className={backdrop}>
             <CircularProgress color="inherit" />
         </Backdrop>
     )
@@ -19,6 +19,7 @@ export function Loading({isLoading}) {
 
 const useStyles = makeStyles(theme => ({
     backdrop: {
-        color: "#fff"
+        color: "#fff",
+        zIndex: Number.MAX_SAFE_INTEGER
     }
 }))

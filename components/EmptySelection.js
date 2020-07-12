@@ -1,7 +1,12 @@
 import * as React from "react"
+import Typography from "@material-ui/core/Typography"
 
-export function EmptySelection() {
+export function EmptySelection({show}) {
+    if(!show) return null
+
     return (
-        <h1>Select a city to make a travel plan</h1>
+        <Typography variant="h5">
+            No location selected
+        </Typography>
     )
 }

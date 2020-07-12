@@ -1,5 +1,7 @@
 import {useCallback} from "react"
 
+// TODO: cache the extract prop with a Map
+
 export function useWikiEntry(city) {
     return useCallback(() => {
         if (city?.value == null) {
