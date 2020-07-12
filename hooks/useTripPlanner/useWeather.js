@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from "react"
+import {useCallback} from "react"
 
 export function useWeather(city) {
     return useCallback(() => {
@@ -6,8 +6,7 @@ export function useWeather(city) {
             return Promise.resolve(null)
         }
         
-        return fetch(buildEndpoint(city.value))
-            .then(res => res.json())
+        return fetch(buildEndpoint(city.value)).then(res => res.json())
     }, [city])
 }
 

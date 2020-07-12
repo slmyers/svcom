@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from "react"
+import {useCallback} from "react"
 
 export function useWikiEntry(city) {
     return useCallback(() => {

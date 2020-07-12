@@ -1,5 +1,6 @@
 const fetch = require("node-fetch")
 
+// to avoid a Mixed-Content error, we send our weather request from this serverless function.
 export default (req, res) => {
     if (!req.query.city) {
         res.status(400).json({ error: "expected city as a query param."})

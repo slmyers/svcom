@@ -1,8 +1,18 @@
 import Head from 'next/head'
+import { 
+  Error, 
+  WeatherForecast, 
+  WikiEntry, 
+  CitySelector,
+  AppBar,
+  EmptySelection,
+  Loading
+} from "../components"
 import { useTripPlanner, useCities } from "../hooks"
-import { Error, WeatherForecast, WikiEntry } from "../components"
+import makeStyles from "@material-ui/core/styles/makeStyles"
 
 const Home = () => {
+  const classes = useStyles()
   const cities = useCities()
   const [selectedCity, setSelectedCity] = React.useState(null)
   const {
@@ -12,94 +22,42 @@ const Home = () => {
   } = useTripPlanner(selectedCity)
 
   return (
-    <div className="container">
+    <div className={classes.container}>
       <Head>
         <title>Silvacom Exercise</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
       </Head>
   
-      <h3 className="title">
-          Trip Planner
-      </h3>
-  
-      {/* TODO: should be same width as above text */}
-      <select disabled={loading} onChange={e => setSelectedCity(cities[e.currentTarget.value])}>
-        <option value={null}></option>
-        {cities.map(({display}, i) => (
-          <option key={i} value={i}>{display}</option>
-        ))}
-      </select>
+      <AppBar />
+
+      <Loading isLoading={loading} />
+      
+      <CitySelector
+        className={classes.citySelector}
+        disabled={loading}
+        onChange={e => setSelectedCity(cities[e.currentTarget.value])}
+        cities={cities}
+      />
 
       {error ? (
         <Error error={error} />
       ) : (
-        <div className="results">
-          <div className="card">
-            <WikiEntry 
-              wikiDescription={apiData?.wikiDescription}
-            />
-          </div>
-          <div className="card">
-            <WeatherForecast
-              currentWeather={apiData?.currentWeather}
-            />
-          </div>
+        <div className={classes.results}>
+          {selectedCity != null ? (
+            <>
+              <WikiEntry 
+                wikiDescription={apiData?.wikiDescription}
+              />
+              <WeatherForecast
+                currentWeather={apiData?.currentWeather}
+              />
+            </>
+          ) : (
+            <EmptySelection />
+          )}
         </div>
-      )}
-  
-      <style jsx>{`
-        .container {
-          height: 100vh;
-          padding: 0 0.5rem;
-          max-width: 500px;
-        }
-
-        .results {
-          height: 100%;
-          width: 100%;
-        }
-
-        .results > .card {
-          margin-top: 2rem;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-  
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-  
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-  
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-  
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-      `}</style>
-  
+      )}  
       <style jsx global>{`
         html,
         body {
@@ -116,5 +74,31 @@ const Home = () => {
     </div>
   )
 }
+
+
+var useStyles = makeStyles(theme => ({
+  container: {
+    height: "100vh",
+    padding: "0 0.5rem",
+    maxWidth: 750,
+    margin: "0 auto",
+    [theme.breakpoints.down("sm")]: {
+      width: "100vw"
+    },
+    display: "flex",
+    flexDirection: "column"
+  },
+  results: {
+    height: "100%",
+    width: "100%",
+    marginTop: "2em",
+    "& *:not(:first-child)": {
+      marginTop: "2em"
+    }
+  },
+  citySelector: {
+    marginTop: "1em"
+  }
+}))
 
 export default Home

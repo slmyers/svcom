@@ -25,6 +25,11 @@ export function useTripPlanner(city) {
     */
     useEffect(() => {
         if (city?.value == null) {
+            setError(null)
+            setApiData({
+                wikiDescription: null,
+                currentWeather: null
+            })
             return
         }
 
@@ -37,13 +42,13 @@ export function useTripPlanner(city) {
         Promise.all([
             weatherPromise(),
             wikiPromise()
-        ]).catch(err => {
-            console.error(err)
-            setLoading(false)
-            setError("oops! unable to find travel plan for: " + city?.value)
-        }).then(([currentWeather, wikiDescription]) => {
+        ]).then(([currentWeather, wikiDescription]) => {
             setLoading(false)
             setApiData({ currentWeather, wikiDescription })
+        }).catch(err => {
+            console.error(err)
+            setLoading(false)
+            setError("oops! unable to find travel plan for: " + city?.display)
         })
 
 
