@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "jest"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -15,5 +16,13 @@
     "node-fetch": "^2.6.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@testing-library/react": "^10.4.5",
+    "babel-jest": "^26.1.0",
+    "jest": "^26.1.0",
+    "jest-fetch-mock": "^3.0.3"
   }
 }

@@ -9,7 +9,7 @@ export function Loading({isLoading}) {
     const { backdrop } = useStyles()
 
     return (
-        <Backdrop open={true} className={backdrop}>
+        <Backdrop open={true} className={backdrop} data-testid="loading">
             <CircularProgress color="inherit" />
         </Backdrop>
     )

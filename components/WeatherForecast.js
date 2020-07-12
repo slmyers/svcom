@@ -19,9 +19,9 @@ export function WeatherForecast({currentWeather, style={}, isToday = true, locat
     const dayPeriod = currentWeather.is_day?.toLowerCase() === "yes" ? day : night
 
     return (
-        <Card style={style} className={dayPeriod}>
+        <Card style={style} className={dayPeriod} data-testid="weather-forecast">
             <CardContent className={contentRoot}>
-                {showIconImage && <img src={currentWeather.weather_icons[0]} height={73} width={64}/>}
+                {showIconImage && <img src={currentWeather.weather_icons[0]} height={73} width={64} data-testid="forecast-icon-image"/>}
                 <Box display="flex" flexDirection="column" className={information}>
                     <Typography>
                         {/* TODO: is this accurate? The timezones and the hour differences make me think not */}

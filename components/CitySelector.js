@@ -14,7 +14,8 @@ export function CitySelector({disabled, onChange, cities, className, showHelperT
                     disabled={disabled}
                     onChange={onChange}
                     inputProps={{
-                        id: "city-select"
+                        id: "city-select",
+                        "data-testid": "city-selector-input"
                     }}
                 >
                     <option aria-label="None" value={null} />

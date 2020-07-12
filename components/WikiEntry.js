@@ -16,7 +16,7 @@ export function WikiEntry({wikiDescription, selectedCity}) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" onClick={() => openInNewTab(selectedCity?.value)}>
+                <Button size="small" onClick={() => openInNewTab(selectedCity?.value)} data-testid="wiki-learn-more-btn">
                     Learn More
                 </Button>
             </CardActions>
