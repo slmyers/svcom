@@ -1,4 +1,4 @@
-const fetch = require("node-fetch")
+import fetch from "node-fetch"
 
 // to avoid a Mixed-Content error, we send our weather request from this serverless function.
 export default (req, res) => {
@@ -18,7 +18,6 @@ export default (req, res) => {
         return fetch(endpoint)
             .then(res => res.json())
             .then(weatherData => {
-                console.log(weatherData)
                 res.json(weatherData)
             })
             .catch(e => {
