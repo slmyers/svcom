@@ -1,4 +1,4 @@
-const cities = [
+export const cities = [
     {display: "Edmonton", value: "edmonton"},
     {display: "Boston", value: "boston"},
     {display: "Montreal", value: "montreal"},

@@ -27,38 +27,41 @@ const Home = () => {
         <AppBar className={classes.appBar}/>
         <Paper className={classes.container}>
 
-        <Loading isLoading={loading} />
+            <CitySelector
+                className={classes.citySelector}
+                disabled={loading}
+                onChange={e => {
+                    setSelectedCity(cities[e.target.value])
+                }}
+                cities={cities}
+                showHelperText={selectedCity == null && !loading}
+            />
 
-        <CitySelector
-            className={classes.citySelector}
-            disabled={loading}
-            onChange={e => setSelectedCity(cities[e.currentTarget.value])}
-            cities={cities}
-            showHelperText={selectedCity == null && !loading}
-        />
+            <Loading isLoading={loading} />
 
-        {/* TODO: clean up messy rendering logic */}
-        {error ? (
-            <Error error={error} />
-        ) : (
-            <div className={classes.results}>
-                {(selectedCity != null && !loading) ? (
-                    <>
-                        <WikiEntry 
-                            wikiDescription={apiData?.wikiDescription}
-                            selectedCity={selectedCity}
-                        />
-                        <WeatherForecast
-                            style={{marginTop: "2em"}}
-                            currentWeather={apiData?.weather?.current}
-                            location={apiData?.weather?.location}
-                        />
-                    </>
-                ) : (
-                    <EmptySelection show={selectedCity == null}/>
-            )}
-            </div>
-        )}  
+            {/* TODO: clean up messy rendering logic */}
+
+            {error ? (
+                <Error error={error} />
+            ) : (
+                <div className={classes.results}>
+                    {(selectedCity != null && !loading) ? (
+                        <>
+                            <WikiEntry 
+                                wikiDescription={apiData?.wikiDescription}
+                                selectedCity={selectedCity}
+                            />
+                            <WeatherForecast
+                                style={{marginTop: "2em"}}
+                                currentWeather={apiData?.weather?.current}
+                                location={apiData?.weather?.location}
+                            />
+                        </>
+                    ) : (
+                        <EmptySelection show={selectedCity == null}/>
+                )}
+                </div>
+            )}  
         </Paper>
         <style jsx global>{`
             html,

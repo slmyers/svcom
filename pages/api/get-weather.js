@@ -9,11 +9,11 @@ export default (req, res) => {
         // we might get the value for the previous day etc.
         // we need to account for timezones
         const prefix = `http://api.weatherstack.com/current?`
-        const suffix = [
+        const query = [
             `access_key=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`,
             `query=${req.query.city}`
         ].join("&")
-        const endpoint = encodeURI(prefix + suffix)
+        const endpoint = encodeURI(prefix + query)
     
         return fetch(endpoint)
             .then(res => res.json())

@@ -1,4 +1,3 @@
-import "regenerator-runtime"
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
@@ -21,7 +20,7 @@ export default function MyApp(props) {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Head>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <title>Silvacom Exercise</title>
@@ -33,7 +32,7 @@ export default function MyApp(props) {
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
-    </React.Fragment>
+    </>
   );
 }
 

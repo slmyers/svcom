@@ -3,10 +3,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import FormHelperText from "@material-ui/core/FormHelperText"
+import PropTypes from 'prop-types';
 
 export function CitySelector({disabled, onChange, cities, className, showHelperText}) {
     return (
-        <div className={className || ""}>
+        <div className={className}>
             <FormControl fullWidth>
                 <InputLabel htmlFor="city-select">City</InputLabel>
                 <Select 
@@ -31,4 +32,14 @@ export function CitySelector({disabled, onChange, cities, className, showHelperT
             </FormControl>
         </div>
     )
+}
+
+CitySelector.propTypes = {
+    disabled: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired,
+    cities: PropTypes.arrayOf(PropTypes.shape({
+        display: PropTypes.string.isRequired,
+    })).isRequired,
+    className: PropTypes.string,
+    showHelperText: PropTypes.bool.isRequired
 }

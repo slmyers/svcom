@@ -54,7 +54,7 @@ export function useTripPlanner(city) {
             console.error(err)
             setLoading(false)
             setError("oops! unable to find travel plan for: " + city?.display)
-            setApiDate({ weather: null, wikiDescription: null})
+            setApiData({ weather: null, wikiDescription: null})
         })
     }, [city])
 

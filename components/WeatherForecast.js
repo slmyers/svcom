@@ -6,10 +6,16 @@ import Typography from '@material-ui/core/Typography';
 import Box from "@material-ui/core/Box"
 import Divider from "@material-ui/core/Divider"
 import moment from "moment-timezone"
+import PropTypes from "prop-types"
 
-// https://react-open-weather.gitbook.io/project/
 export function WeatherForecast({currentWeather, style={}, isToday = true, location}) {
-    if (!currentWeather) return null
+    if (!(currentWeather && location)) {
+        // console.log("+++++")
+        // console.log(currentWeather)
+        // console.log(location)
+        // console.log("++++")
+        return null
+    }
 
     const { contentRoot, information, day, night } = useStyles()
 
@@ -24,8 +30,7 @@ export function WeatherForecast({currentWeather, style={}, isToday = true, locat
                 {showIconImage && <img src={currentWeather.weather_icons[0]} height={73} width={64} data-testid="forecast-icon-image"/>}
                 <Box display="flex" flexDirection="column" className={information}>
                     <Typography>
-                        {/* TODO: is this accurate? The timezones and the hour differences make me think not */}
-                        {moment(location.localtime).tz(location.timezone_id).format("dddd DD MMMM")}
+                        {moment(location.localtime).tz(location.timezone_id).format(format)}
                     </Typography>
 
                     <StyledDivider />
@@ -53,6 +58,19 @@ export function WeatherForecast({currentWeather, style={}, isToday = true, locat
     )
 }
 
+WeatherForecast.propTypes = {
+    currentWeather: PropTypes.shape({
+        weather_icons: PropTypes.arrayOf(PropTypes.string).isRequired,
+        temperature: PropTypes.number.isRequired,
+        weather_descriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+        humidity: PropTypes.number.isRequired
+    }),
+    location: PropTypes.shape({
+        localtime: PropTypes.string.isRequired,
+        timezone_id: PropTypes.string.isRequired
+    })
+}
+
 const useStyles = makeStyles(theme => ({
     contentRoot: {
         display: "flex",
@@ -64,13 +82,13 @@ const useStyles = makeStyles(theme => ({
     },
 
     night: {
-      backgroundColor: "#3c4a90",
-      color: "white"
+        background: "linear-gradient(90deg, rgba(60,74,144,1) 62%, rgba(255,255,255,1) 100%)",
+        color: "white"
     },
 
     day: {
-      backgroundColor: "#96b4e4",
-      color: "white"
+        background: "linear-gradient(90deg, rgba(150,180,228,1) 62%, rgba(255,255,255,1) 100%)",
+        color: "white"
     }
 }))
 

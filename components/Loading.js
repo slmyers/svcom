@@ -1,25 +1,22 @@
 import * as React from "react"
-import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import makeStyles from "@material-ui/core/styles/makeStyles"
+import Box from "@material-ui/core/Box"
+import PropTypes from "prop-types"
+import Typography from "@material-ui/core/Typography"
 
 export function Loading({isLoading}) {
     if (!isLoading) return null
 
-    const { backdrop } = useStyles()
-
     return (
-        <Backdrop open={true} className={backdrop} data-testid="loading">
-            <CircularProgress color="inherit" />
-        </Backdrop>
-    )
-    
+        <Box flexGrow={1} maxHeight={300} width="100%" display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+            <CircularProgress color="primary" />
+            <Typography>
+                loading...
+            </Typography>
+        </Box>
+    )    
 }
 
-
-const useStyles = makeStyles(theme => ({
-    backdrop: {
-        color: "#fff",
-        zIndex: Number.MAX_SAFE_INTEGER
-    }
-}))
+Loading.propTypes = {
+    isLoading: PropTypes.bool.isRequired
+}
