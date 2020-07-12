@@ -43,7 +43,10 @@ export function useTripPlanner(city) {
 
         Promise.all([
             weatherPromise(),
-            wikiPromise()
+            wikiPromise(),
+            // we do this to avoid flashing a loading screen at the user, eg load time very quick and user sees progress spinner for just a flash
+            // always having a consistent loading experience provides feedback to the user (the app is indeed fetching new data)
+            sleep("1000ms")
         ]).then(([weather, wikiDescription]) => {
             setLoading(false)
             setApiData({ weather, wikiDescription })
@@ -53,9 +56,6 @@ export function useTripPlanner(city) {
             setError("oops! unable to find travel plan for: " + city?.display)
             setApiDate({ weather: null, wikiDescription: null})
         })
-
-
-
     }, [city])
 
     return {
@@ -65,3 +65,9 @@ export function useTripPlanner(city) {
     }
 }
 
+
+function sleep(stringTime) {
+    return new Promise(res => {
+        setTimeout(res, Number.parseInt(stringTime))
+    })
+}

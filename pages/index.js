@@ -10,6 +10,7 @@ import {
 } from "../components"
 import { useTripPlanner, useCities } from "../hooks"
 import makeStyles from "@material-ui/core/styles/makeStyles"
+import Paper from "@material-ui/core/Paper"
 
 const Home = () => {
   const classes = useStyles()
@@ -22,12 +23,12 @@ const Home = () => {
   } = useTripPlanner(selectedCity)
 
   return (
-    <div className={classes.container}>
-
-        <AppBar />
+    <>
+        <AppBar className={classes.appBar}/>
+        <Paper className={classes.container}>
 
         <Loading isLoading={loading} />
-        
+
         <CitySelector
             className={classes.citySelector}
             disabled={loading}
@@ -55,38 +56,50 @@ const Home = () => {
                     </>
                 ) : (
                     <EmptySelection show={selectedCity == null}/>
-              )}
+            )}
             </div>
         )}  
-      <style jsx global>{`
-        html,
-        body {
-            padding: 0;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-              Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+        </Paper>
+        <style jsx global>{`
+            html,
+            body {
+                padding: 0;
+                margin: 0;
+                font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+                Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+                background-color: #efeeee;
+            }
 
-        }
-  
-        * {
-            box-sizing: border-box;
-        }
-      `}</style>
-    </div>
+            * {
+                box-sizing: border-box;
+            }
+        `}</style>
+    </>
   )
 }
 
 
 const useStyles = makeStyles(theme => ({
+    appBar: {
+        [theme.breakpoints.up("sm")]: {
+            maxWidth: 750,
+            margin: "0 auto"
+        } 
+    },  
     container: {
-        height: "100vh",
         maxWidth: 750,
         margin: "0 auto",
+        // subtract toolbar height to avoid unecessary overflow
         [theme.breakpoints.down("sm")]: {
-            width: "100vw"
+            width: "100vw",
+            minHeight: "calc(100vh - 56px)",
+        },
+        [theme.breakpoints.up("sm")]: {
+            padding: "0 1.5rem",
+            minHeight: "calc(100vh - 64px)",
         },
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
     },
     results: {
         height: "100%",

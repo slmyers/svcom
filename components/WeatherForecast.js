@@ -56,6 +56,7 @@ export function WeatherForecast({currentWeather, style={}, isToday = true, locat
 const useStyles = makeStyles(theme => ({
     contentRoot: {
         display: "flex",
+        alignItems: "center"
     },
 
     information: {
