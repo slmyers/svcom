@@ -1,23 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Head from 'next/head';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { theme } from '../theme';
+import * as React from 'react'
+import PropTypes from 'prop-types'
+import Head from 'next/head'
+import {ThemeProvider} from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import {theme} from '../theme'
 
 // helps clashing between server and client generated styles
 // https://github.com/mui-org/material-ui/tree/master/examples/nextjs/pages
 
 export default function MyApp(props) {
-  const { Component, pageProps } = props;
+  const { Component, pageProps } = props
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
+    const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
+      jssStyles.parentElement.removeChild(jssStyles)
     }
-  }, []);
+  }, [])
 
   return (
     <>
@@ -33,10 +33,10 @@ export default function MyApp(props) {
         <Component {...pageProps} />
       </ThemeProvider>
     </>
-  );
+  )
 }
 
 MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired,
-};
+}

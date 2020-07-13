@@ -1,12 +1,12 @@
-import * as React from "react"
-import makeStyles from "@material-ui/core/styles/makeStyles"
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Box from "@material-ui/core/Box"
-import Divider from "@material-ui/core/Divider"
-import moment from "moment-timezone"
-import PropTypes from "prop-types"
+import * as React from 'react'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import Divider from '@material-ui/core/Divider'
+import moment from 'moment-timezone'
+import PropTypes from 'prop-types'
 
 export function WeatherForecast({currentWeather, style, location}) {
     if (!(currentWeather && location)) {
@@ -75,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     },
 
     night: {
-        background: "linear-gradient(90deg, rgba(60,74,144,1) 62%, rgba(255,255,255,1) 100%)",
+        background: "linear-gradient(90deg, rgba(60,74,144,1) 76%, rgba(255,255,255,1) 100%)",
         color: "white"
     },
 

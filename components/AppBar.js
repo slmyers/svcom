@@ -1,8 +1,8 @@
-import React from 'react';
-import {default as MaterialAppBar} from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
+import * as React from 'react'
+import {default as MaterialAppBar} from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import PropTypes from 'prop-types'
 
 export function AppBar({className}) {
     return (

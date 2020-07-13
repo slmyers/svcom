@@ -1,10 +1,10 @@
-import {useCallback} from "react"
-import {useCachedFetch} from "./useCachedFetch"
+import * as React from 'react'
+import {useCachedFetch} from './useCachedFetch'
 
 export function useWikiEntry(city) {
     const cachedFetch = useCachedFetch()
 
-    return useCallback(() => {
+    return React.useCallback(() => {
         if (city?.value == null) {
             return Promise.resolve(null)
         }

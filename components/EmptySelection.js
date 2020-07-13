@@ -1,8 +1,8 @@
-import * as React from "react"
-import Typography from "@material-ui/core/Typography"
-import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
-import Box from "@material-ui/core/Box"
-import PropTypes from 'prop-types';
+import * as React from 'react'
+import Typography from '@material-ui/core/Typography'
+import NotListedLocationIcon from '@material-ui/icons/NotListedLocation'
+import Box from '@material-ui/core/Box'
+import PropTypes from 'prop-types'
 
 export function EmptySelection({show}) {
     if(!show) return null

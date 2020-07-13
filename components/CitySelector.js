@@ -1,9 +1,9 @@
-import * as React from "react"
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import FormHelperText from "@material-ui/core/FormHelperText"
-import PropTypes from 'prop-types';
+import * as React from 'react'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import PropTypes from 'prop-types'
 
 export function CitySelector({disabled, onChange, cities, className, showHelperText}) {
     return (

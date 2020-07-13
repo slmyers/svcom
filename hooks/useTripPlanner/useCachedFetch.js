@@ -1,10 +1,10 @@
-import React, {useCallback, useState} from "react"
+import * as React from 'react'
 
 export function useCachedFetch() {
     // for testing we wrap the App with our own values, but in production / development environments
     // we will default to the values at the bottom of the file. The colocation is convienient.
     const { maxAge, cache } = useCachedFetchCtx()
-    return useCallback((url) => {
+    return React.useCallback((url) => {
         if (cache.has(url)) {
             const value = cache.get(url)
             if ((Date.now() - value.crePit) >= maxAge) {

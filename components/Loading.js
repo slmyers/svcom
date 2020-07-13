@@ -1,8 +1,8 @@
-import * as React from "react"
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Box from "@material-ui/core/Box"
-import PropTypes from "prop-types"
-import Typography from "@material-ui/core/Typography"
+import * as React from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Box from '@material-ui/core/Box'
+import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
 
 export function Loading({isLoading}) {
     if (!isLoading) return null
@@ -26,5 +26,5 @@ export function Loading({isLoading}) {
 }
 
 Loading.propTypes = {
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool
 }

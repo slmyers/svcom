@@ -1,37 +1,28 @@
-import React, {useState, useEffect} from "react"
-import {useCurrentWeather} from "./useCurrentWeather"
-import {useWikiEntry} from "./useWikiEntry"
+import * as React from 'react'
+import {useCurrentWeather} from './useCurrentWeather'
+import {useWikiEntry} from './useWikiEntry'
+import { Error } from '../../components'
 
 export function useTripPlanner(city) {
-    // TODO: refactor to useReducer
-    const [loading, setLoading] = useState(false)
-    const [apiData, setApiData] = useState({
-        wikiDescription: null,
-        currentWeather: null
-    })
-    const [error, setError] = useState(null)
+    const [state, dispatch] = React.useReducer(reducer, initialState)
     const weatherPromise = useCurrentWeather(city)
     const wikiPromise = useWikiEntry(city)
 
     // the minimum loading length is configurable, good for testing.
     const {sleepDuration} = useTripPlannerCtx()
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (city?.value == null) {
-            setLoading(false)
-            setError(null)
-            setApiData({
-                wikiDescription: null,
-                weather: null
-            })
+            dispatch({type: "UNKNOWN_CITY"})
             return
         }
 
-        if (loading) {
+        if (state.loading) {
+            console.warn("useTripPlanner: returning from effect early due to ongoing loading state.")
             return
         }
 
-        setLoading(true)
+        dispatch({type: "LOADING"})
 
         // by using Promise.all we can wait for all requests to finish and avoid only the data staggering in
         // also it makes a single loading spinner convienient, which can be nicer than two different disjointed spinners.
@@ -43,22 +34,77 @@ export function useTripPlanner(city) {
             sleep(sleepDuration)
         ]).then(([weather, wikiDescription]) => {
             if (weather.success === false) {
-                setError(weather.error?.info)
+                dispatch({type: "LOADED_WITH_ERROR", payload: weather.error?.info})
+            } else {
+                dispatch({
+                    type: "LOADED_WITHOUT_ERROR", 
+                    payload: { weather, wikiDescription }
+                })
             }
-            setApiData({ weather, wikiDescription })
-            setLoading(false) 
         }).catch(err => {
             console.error(err)
-            setLoading(false)
-            setError("oops! unable to find travel plan for: " + city?.display)
-            setApiData({ weather: null, wikiDescription: null})
+            dispatch({
+                type: "ERROR_RUNNING_NETWORK_REQUEST", 
+                payload: "oops! unable to find travel plan for: " + city?.display
+            })
         })
     }, [city])
 
+    return state
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+
+        case "UNKNOWN_CITY": {
+            return initialState()
+        }
+
+        case "LOADING": {
+            return {
+                ...state,
+                loading: true
+            }
+        }
+
+        case "LOADED_WITHOUT_ERROR": {
+            return {
+                error: null,
+                loading: false,
+                apiData: action.payload,
+            }
+        }
+
+        case "LOADED_WITH_ERROR": {
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+        }
+
+        case "ERROR_RUNNING_REQUEST": {
+            return {
+                ...initialState(),
+                error: action.payload
+            }
+        }
+
+        default: {
+            console.dir(action)
+            throw new Error("useTripPlanner: unrecognized action in reducer")
+        }
+    }
+}
+
+function initialState() {
     return {
-        loading,
-        apiData,
-        error
+        loading: false,
+        apiData: {
+            wikiDescription: null,
+            weather: null
+        },
+        error: null
     }
 }
 

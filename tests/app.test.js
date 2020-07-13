@@ -1,9 +1,9 @@
-import * as React from "react"
-import App from "../pages"
+import * as React from 'react'
+import App from '../pages'
 import '@testing-library/jest-dom'
-import { render, cleanup, fireEvent, act } from '@testing-library/react'
-import {enableFetchMocks, disableFetchMocks} from "jest-fetch-mock"
-import { cities, CachedFetchProvider, TripPlannerProvider } from "../hooks"
+import {render, cleanup, fireEvent, act} from '@testing-library/react'
+import {enableFetchMocks, disableFetchMocks} from 'jest-fetch-mock'
+import {cities, CachedFetchProvider, TripPlannerProvider} from '../hooks'
 
 describe("App", () => {
 

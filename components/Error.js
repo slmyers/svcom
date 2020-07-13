@@ -1,8 +1,8 @@
-import * as React from "react"
-import PropTypes from "prop-types"
-import ErrorIcon from '@material-ui/icons/Error';
-import Box from "@material-ui/core/Box"
-import Typography from "@material-ui/core/Typography";
+import * as React from 'react'
+import PropTypes from 'prop-types'
+import ErrorIcon from '@material-ui/icons/Error'
+import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 
 
 export function Error({error}) {
@@ -24,5 +24,5 @@ export function Error({error}) {
 }
 
 Error.propTypes = {
-    error: PropTypes.string.isRequired
+    error: PropTypes.string
 }

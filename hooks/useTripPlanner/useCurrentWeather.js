@@ -1,5 +1,5 @@
-import {useCallback} from "react"
-import { useCachedFetch } from "./useCachedFetch"
+import {useCallback} from 'react'
+import {useCachedFetch} from './useCachedFetch'
 
 export function useCurrentWeather(city) {
     const cachedFetch = useCachedFetch()

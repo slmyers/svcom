@@ -29,10 +29,10 @@ export function WikiEntry({wikiDescription, selectedCity}) {
         </Card>
     )
 }
-encodeURIComponent
+
 function openInNewTab(city) {
     const url = encodeURI(`https://en.wikipedia.org/wiki/${city}`)
-    var win = window.open(url, '_blank');
+    const win = window.open(url, '_blank');
     win.focus();
 }
 

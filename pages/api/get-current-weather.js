@@ -1,4 +1,4 @@
-import fetch from "node-fetch"
+import fetch from 'node-fetch'
 
 // the free tier of weatherstack only provides an http endpoint, if we attempt to fetch on the client
 // we get a Mixed-Content error. So instead we fetch from the server.

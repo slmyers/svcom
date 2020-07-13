@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from 'react'
 import { 
   Error, 
   WeatherForecast, 
@@ -7,45 +7,48 @@ import {
   AppBar,
   EmptySelection,
   Loading,
-} from "../components"
-import { useTripPlanner, useCities } from "../hooks"
-import makeStyles from "@material-ui/core/styles/makeStyles"
-import Paper from "@material-ui/core/Paper"
+} from '../components'
+import {useTripPlanner, useCities} from '../hooks'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import Paper from '@material-ui/core/Paper'
 
 const Home = () => {
-  const classes = useStyles()
-  const cities = useCities()
-  const [selectedCity, setSelectedCity] = React.useState(null)
-  const {
-    loading,
-    apiData,
-    error
-  } = useTripPlanner(selectedCity)
+    const classes = useStyles()
+    const cities = useCities()
+    const [selectedCity, setSelectedCity] = React.useState(null)
+    const {
+        loading,
+        apiData,
+        error
+    } = useTripPlanner(selectedCity)
+    const {
+        showEmptySelection,
+        showTripPlan,
+        showError,
+        showHelperText
+    } = useRenderingLogic(selectedCity, { loading, apiData, error })
+    
+    return (
+        <>
+            <AppBar className={classes.appBar}/>
+            <Paper className={classes.container}>
 
-  return (
-    <>
-        <AppBar className={classes.appBar}/>
-        <Paper className={classes.container}>
+                <CitySelector
+                    className={classes.citySelector}
+                    disabled={loading}
+                    onChange={e => {
+                        setSelectedCity(cities[e.target.value])
+                    }}
+                    cities={cities}
+                    showHelperText={showHelperText}
+                />
 
-            <CitySelector
-                className={classes.citySelector}
-                disabled={loading}
-                onChange={e => {
-                    setSelectedCity(cities[e.target.value])
-                }}
-                cities={cities}
-                showHelperText={selectedCity == null && !loading}
-            />
+                <Loading isLoading={loading} />
 
-            <Loading isLoading={loading} />
+                {showError && <Error error={error} />}
 
-            {/* TODO: clean up messy rendering logic */}
-
-            {error ? (
-                <Error error={error} />
-            ) : (
                 <div className={classes.results}>
-                    {(selectedCity != null && !loading) ? (
+                    {showTripPlan && (
                         <>
                             <WikiEntry 
                                 selectedCity={selectedCity}
@@ -57,28 +60,35 @@ const Home = () => {
                                 location={apiData?.weather?.location}
                             />
                         </>
-                    ) : (
-                        <EmptySelection show={selectedCity == null}/>
-                )}
+                    )}
+                    <EmptySelection show={showEmptySelection}/>
                 </div>
-            )}  
-        </Paper>
-        <style jsx global>{`
-            html,
-            body {
-                padding: 0;
-                margin: 0;
-                font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-                Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-                background-color: #efeeee;
-            }
+            </Paper>
+            <style jsx global>{`
+                html,
+                body {
+                    padding: 0;
+                    margin: 0;
+                    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+                    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+                    background-color: #efeeee;
+                }
 
-            * {
-                box-sizing: border-box;
-            }
-        `}</style>
-    </>
+                * {
+                    box-sizing: border-box;
+                }
+            `}</style>
+        </>
   )
+}
+
+function useRenderingLogic(selectedCity, apiData) {
+    return {
+        showEmptySelection: selectedCity == null && !apiData.loading && !apiData.error,
+        showTripPlan: selectedCity != null && !apiData.loading && !apiData.error,
+        showError: apiData.error !== null && !apiData.loading,
+        showHelperText: selectedCity == null && !apiData.loading
+    }
 }
 
 
