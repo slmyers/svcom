@@ -62,7 +62,7 @@ export function useTripPlanner(city) {
     }
 }
 
-export const TripPlannerCtx = React.createContext({sleepDuration: 1000})
+export const TripPlannerCtx = React.createContext({sleepDuration: 725})
 export function TripPlannerProvider({children, value}) {
     return (
         <TripPlannerCtx.Provider value={value}>

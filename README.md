@@ -1,3 +1,12 @@
+### see it live
+
+[link](https://silvacom-exercise.vercel.app/)
+
+- tested on Windows Desktop Chrome and Andoid Mobile Chrome.
+
+### youtube video
+[link](https://youtu.be/nItZg5zAkfg)
+
 ### getting started
 
 Step 1: get an api key from [weatherstack](https://weatherstack.com/)
