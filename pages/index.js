@@ -6,7 +6,7 @@ import {
   CitySelector,
   AppBar,
   EmptySelection,
-  Loading
+  Loading,
 } from "../components"
 import { useTripPlanner, useCities } from "../hooks"
 import makeStyles from "@material-ui/core/styles/makeStyles"
@@ -48,8 +48,8 @@ const Home = () => {
                     {(selectedCity != null && !loading) ? (
                         <>
                             <WikiEntry 
-                                wikiDescription={apiData?.wikiDescription}
                                 selectedCity={selectedCity}
+                                wikiDescription={apiData?.wikiDescription} 
                             />
                             <WeatherForecast
                                 style={{marginTop: "2em"}}

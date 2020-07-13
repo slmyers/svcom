@@ -1,17 +1,15 @@
 import {useCallback} from "react"
-
-// TODO: cache the extract prop with a Map
+import {useCachedFetch} from "./useCachedFetch"
 
 export function useWikiEntry(city) {
+    const cachedFetch = useCachedFetch()
+
     return useCallback(() => {
         if (city?.value == null) {
             return Promise.resolve(null)
         }
-
-        return fetch(buildEndpoint(city.value))
-            .then(res => res.json())
-            .then(wiki => wiki.extract)
-    }, [city])
+        return cachedFetch(buildEndpoint(city.value)).then(wiki => wiki.extract)
+    }, [city, cachedFetch])
 }
 
 function buildEndpoint(city) {

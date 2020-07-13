@@ -1,3 +1,6 @@
+// I find it's better to start with an object even if a primitive (string) would do, 
+// because if you go from prmitive -> object, you might have to make many small 
+// changes in the app.
 export const cities = [
     {display: "Edmonton", value: "edmonton"},
     {display: "Boston", value: "boston"},

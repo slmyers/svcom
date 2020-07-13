@@ -8,29 +8,22 @@ import Divider from "@material-ui/core/Divider"
 import moment from "moment-timezone"
 import PropTypes from "prop-types"
 
-export function WeatherForecast({currentWeather, style={}, isToday = true, location}) {
+export function WeatherForecast({currentWeather, style, location}) {
     if (!(currentWeather && location)) {
-        // console.log("+++++")
-        // console.log(currentWeather)
-        // console.log(location)
-        // console.log("++++")
         return null
     }
-
-    const { contentRoot, information, day, night } = useStyles()
-
+    const { contentRoot, details, day, night } = useStyles()
     const showIconImage = Array.isArray(currentWeather.weather_icons) && currentWeather.weather_icons[0] != null
-
-    const format = isToday ? "dddd DD MMMM" : "DAYS_OTHER_THAN_TODAY_ARE_NOT_SUPPORTED"
     const dayPeriod = currentWeather.is_day?.toLowerCase() === "yes" ? day : night
 
     return (
         <Card style={style} className={dayPeriod} data-testid="weather-forecast">
             <CardContent className={contentRoot}>
                 {showIconImage && <img src={currentWeather.weather_icons[0]} height={73} width={64} data-testid="forecast-icon-image"/>}
-                <Box display="flex" flexDirection="column" className={information}>
+                <Box display="flex" flexDirection="column" className={details}>
+
                     <Typography>
-                        {moment(location.localtime).tz(location.timezone_id).format(format)}
+                        {moment(location.localtime).tz(location.timezone_id).format("dddd DD MMMM")}
                     </Typography>
 
                     <StyledDivider />
@@ -77,7 +70,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center"
     },
 
-    information: {
+    details: {
       marginLeft: "2em"
     },
 

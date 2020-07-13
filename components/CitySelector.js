@@ -16,6 +16,7 @@ export function CitySelector({disabled, onChange, cities, className, showHelperT
                     onChange={onChange}
                     inputProps={{
                         id: "city-select",
+                        // data-testid makes it very convienient to find the input while testing
                         "data-testid": "city-selector-input"
                     }}
                 >

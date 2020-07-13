@@ -8,7 +8,15 @@ export function Loading({isLoading}) {
     if (!isLoading) return null
 
     return (
-        <Box flexGrow={1} maxHeight={300} width="100%" display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+        <Box 
+            flexGrow={1} 
+            maxHeight={300} 
+            width="100%" 
+            display="flex" 
+            justifyContent="center" 
+            alignItems="center" 
+            flexDirection="column"
+        >
             <CircularProgress color="primary" />
             <Typography>
                 loading...

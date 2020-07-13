@@ -1,13 +1,11 @@
 import fetch from "node-fetch"
 
-// to avoid a Mixed-Content error, we send our weather request from this serverless function.
+// the free tier of weatherstack only provides an http endpoint, if we attempt to fetch on the client
+// we get a Mixed-Content error. So instead we fetch from the server.
 export default (req, res) => {
     if (!req.query.city) {
         res.status(400).json({ error: "expected city as a query param."})
     } else {
-        // TODO: we might have to specify the day because if we use the current value then 
-        // we might get the value for the previous day etc.
-        // we need to account for timezones
         const prefix = `http://api.weatherstack.com/current?`
         const query = [
             `access_key=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`,

@@ -9,6 +9,11 @@ import PropTypes from "prop-types"
 export function WikiEntry({wikiDescription, selectedCity}) {
     if (!wikiDescription) return null
 
+    const onClick = selectedCity?.value ? 
+        () => openInNewTab(selectedCity?.value) :
+        // this should never happen, but we don't want to send the user to an Undefined Wikipedia page.
+        () => alert("oops! unable to find selected city.")
+
     return (
         <Card>
             <CardContent>
@@ -17,14 +22,14 @@ export function WikiEntry({wikiDescription, selectedCity}) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" onClick={() => openInNewTab(selectedCity?.value)} data-testid="wiki-learn-more-btn">
+                <Button size="small" onClick={onClick}>
                     Learn More
                 </Button>
             </CardActions>
         </Card>
     )
 }
-
+encodeURIComponent
 function openInNewTab(city) {
     const url = encodeURI(`https://en.wikipedia.org/wiki/${city}`)
     var win = window.open(url, '_blank');
