@@ -36,7 +36,7 @@ export function CitySelector({disabled, onChange, cities, className, showHelperT
 }
 
 CitySelector.propTypes = {
-    disabled: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     cities: PropTypes.arrayOf(PropTypes.shape({
         display: PropTypes.string.isRequired,

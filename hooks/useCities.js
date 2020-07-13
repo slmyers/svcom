@@ -6,7 +6,7 @@ export const cities = [
     {display: "Boston", value: "boston"},
     {display: "Montreal", value: "montreal"},
     {display: "Winnipeg", value: "winnipeg"},
-    {display: "Vancouver", value: "vancouver"}
+    {display: "Beijing", value: "beijing"}
 ].sort((a, b) => {
     return a.display.toLocaleLowerCase().localeCompare(
         b.display.toLocaleLowerCase()

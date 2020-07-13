@@ -3,7 +3,7 @@ import App from '../pages'
 import '@testing-library/jest-dom'
 import {render, cleanup, fireEvent, act} from '@testing-library/react'
 import {enableFetchMocks, disableFetchMocks} from 'jest-fetch-mock'
-import {cities, CachedFetchProvider, TripPlannerProvider} from '../hooks'
+import {cities, CachedFetchProvider} from '../hooks'
 
 describe("App", () => {
 
@@ -38,25 +38,17 @@ describe("App", () => {
             }
         })
 
-        const cache = new Map()
-        const { getByTestId, getByText, queryByText } = render(
-            <TripPlannerProvider value={{sleepDuration: 50}}>
-                <CachedFetchProvider value={{maxAge: 500, cache}}>
-                    <App />
-                </CachedFetchProvider>
-            </TripPlannerProvider>
-        )
+        const { getByTestId, getByText, queryByText } = render(<App />)
 
         const input = getByTestId("city-selector-input")
-        await act(async () => {
+        act(() => {
             fireEvent.change(input, { target: { value: 1 }})
-            await Promise.resolve()
         })
 
         expect(getByText("loading...")).toBeTruthy()
 
         await act(async () => {
-            await new Promise(res => setTimeout(res, 51))
+            await Promise.resolve()
         })
 
         expect(queryByText("loading...")).toBeNull()
@@ -85,19 +77,16 @@ describe("App", () => {
             }
         })
 
-        const cache = new Map()
         const { getByTestId, getByText, queryByText } = render(
-            <TripPlannerProvider value={{sleepDuration: 50}}>
-                <CachedFetchProvider value={{maxAge: 500, cache}}>
-                    <App />
-                </CachedFetchProvider>
-            </TripPlannerProvider>
+            <CachedFetchProvider value={{maxAge: 0, cache: new Map()}}>
+                <App />
+            </CachedFetchProvider>
         )
 
         const input = getByTestId("city-selector-input")
         await act(async () => {
             fireEvent.change(input, { target: { value: 1 }})
-            await new Promise(res => setTimeout(res, 51))
+            Promise.resolve()
         })
 
         expect(queryByText("WIKI DESCRIPTION")).toBeNull()
@@ -125,15 +114,11 @@ describe("App", () => {
 
         // use this as a mock value
         const now = Date.now()
-        const cache = new Map()
 
         const { getByTestId } = render(
-            <TripPlannerProvider value={{sleepDuration: 0}}>
-                <CachedFetchProvider value={{maxAge: 500, cache}}>
-                    <App />
-                </CachedFetchProvider>
-            </TripPlannerProvider>
-            
+            <CachedFetchProvider value={{maxAge: 1, cache: new Map()}}>
+                <App />
+            </CachedFetchProvider>
         )
 
         const input = getByTestId("city-selector-input")
@@ -142,19 +127,19 @@ describe("App", () => {
         Date.now = jest.fn(() => now)
         await act(async () => {
             fireEvent.change(input, { target: { value: 1 }})
-            await new Promise(res => setTimeout(res, 10))
+            Promise.resolve()
         })
         expect(fetchMock).toHaveBeenCalledTimes(2)
         await act(async () => {
             fireEvent.change(input, { target: { value: 2 }})
-            await new Promise(res => setTimeout(res, 10))
+            Promise.resolve()
         })
         expect(fetchMock).toHaveBeenCalledTimes(4)
 
         // the first city is still valid in the cache, do not expect more calls to fetch
         await act(async () => {
             fireEvent.change(input, { target: { value: 1 }})
-            await new Promise(res => setTimeout(res, 10))
+            Promise.resolve()
         })
         expect(fetchMock).toHaveBeenCalledTimes(4)
 
@@ -162,7 +147,7 @@ describe("App", () => {
         Date.now = jest.fn(() => now + 500)
         await act(async () => {
             fireEvent.change(input, { target: { value: 2 }})
-            await new Promise(res => setTimeout(res, 10))
+            Promise.resolve()
         })
         expect(fetchMock).toHaveBeenCalledTimes(6)
 
