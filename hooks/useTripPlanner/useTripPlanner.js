@@ -8,6 +8,9 @@ export function useTripPlanner(city) {
     const weatherPromise = useCurrentWeather(city)
     const wikiPromise = useWikiEntry(city)
 
+    // the minimum loading length is configurable, good for testing.
+    const {sleepDuration} = useTripPlannerCtx()
+
     React.useEffect(() => {
         if (city?.value == null) {
             dispatch({type: "UNKNOWN_CITY"})
@@ -21,10 +24,14 @@ export function useTripPlanner(city) {
 
         dispatch({type: "LOADING"})
 
-        // by using Promise.all we can wait for all requests to finish and avoid the UI "staggering in"
+        // by using Promise.all we can wait for all requests to finish and avoid only the data staggering in
+        // also it makes a single loading spinner convienient, which can be nicer than two different disjointed spinners.
         Promise.all([
             weatherPromise(),
             wikiPromise(),
+            // we do this to avoid flashing a loading screen at the user, eg load time very quick and user sees progress spinner for just a flash
+            // always having a consistent loading experience provides feedback to the user (the app is indeed fetching new data)
+            sleepDuration ? sleep(sleepDuration) : Promise.resolve()
         ]).then(([weather, wikiDescription]) => {
             if (weather.success === false) {
                 dispatch({type: "LOADED_WITH_ERROR", payload: weather.error?.info})
@@ -37,7 +44,7 @@ export function useTripPlanner(city) {
         }).catch(err => {
             console.error(err)
             dispatch({
-                type: "ERROR_HANDLING_NETWORK_REQUEST", 
+                type: "ERROR_RUNNING_NETWORK_REQUEST", 
                 payload: "oops! unable to find travel plan for: " + city?.display
             })
         })
@@ -62,6 +69,7 @@ function reducer(state, action) {
 
         case "LOADED_WITHOUT_ERROR": {
             return {
+                ...state,
                 error: null,
                 loading: false,
                 apiData: action.payload,
@@ -76,7 +84,7 @@ function reducer(state, action) {
             }
         }
 
-        case "ERROR_HANDLING_NETWORK_REQUEST": {
+        case "ERROR_RUNNING_REQUEST": {
             return {
                 ...initialState(),
                 error: action.payload
@@ -99,4 +107,22 @@ function initialState() {
         },
         error: null
     }
+}
+
+export const TripPlannerCtx = React.createContext({sleepDuration: 725})
+export function TripPlannerProvider({children, value}) {
+    return (
+        <TripPlannerCtx.Provider value={value}>
+            {children}
+        </TripPlannerCtx.Provider>
+    )
+}
+export function useTripPlannerCtx() {
+    return React.useContext(TripPlannerCtx)
+}
+
+function sleep(duration) {
+    return new Promise(res => {
+        setTimeout(res, duration)
+    })
 }

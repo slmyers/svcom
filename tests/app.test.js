@@ -3,7 +3,7 @@ import App from '../pages'
 import '@testing-library/jest-dom'
 import {render, cleanup, fireEvent, act} from '@testing-library/react'
 import {enableFetchMocks, disableFetchMocks} from 'jest-fetch-mock'
-import {cities, CachedFetchProvider} from '../hooks'
+import {cities, CachedFetchProvider, TripPlannerProvider} from '../hooks'
 
 describe("App", () => {
 
@@ -38,17 +38,25 @@ describe("App", () => {
             }
         })
 
-        const { getByTestId, getByText, queryByText } = render(<App />)
+        const cache = new Map()
+        const { getByTestId, getByText, queryByText } = render(
+            <TripPlannerProvider value={{sleepDuration: 50}}>
+                <CachedFetchProvider value={{maxAge: 500, cache}}>
+                    <App />
+                </CachedFetchProvider>
+            </TripPlannerProvider>
+        )
 
         const input = getByTestId("city-selector-input")
-        act(() => {
+        await act(async () => {
             fireEvent.change(input, { target: { value: 1 }})
+            await Promise.resolve()
         })
 
         expect(getByText("loading...")).toBeTruthy()
 
         await act(async () => {
-            await Promise.resolve()
+            await new Promise(res => setTimeout(res, 51))
         })
 
         expect(queryByText("loading...")).toBeNull()
@@ -77,10 +85,13 @@ describe("App", () => {
             }
         })
 
+        const cache = new Map()
         const { getByTestId, getByText, queryByText } = render(
-            <CachedFetchProvider value={{maxAge: 0, cache: new Map()}}>
-                <App />
-            </CachedFetchProvider>
+            <TripPlannerProvider value={{sleepDuration: 0}}>
+                <CachedFetchProvider value={{maxAge: 500, cache}}>
+                    <App />
+                </CachedFetchProvider>
+            </TripPlannerProvider>
         )
 
         const input = getByTestId("city-selector-input")
@@ -114,11 +125,15 @@ describe("App", () => {
 
         // use this as a mock value
         const now = Date.now()
+        const cache = new Map()
 
         const { getByTestId } = render(
-            <CachedFetchProvider value={{maxAge: 1, cache: new Map()}}>
-                <App />
-            </CachedFetchProvider>
+            <TripPlannerProvider value={{sleepDuration: 0}}>
+                <CachedFetchProvider value={{maxAge: 500, cache}}>
+                    <App />
+                </CachedFetchProvider>
+            </TripPlannerProvider>
+            
         )
 
         const input = getByTestId("city-selector-input")
