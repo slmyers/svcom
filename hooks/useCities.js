@@ -2,7 +2,7 @@
 // because if you go from prmitive -> object, you might have to make many small 
 // changes in the app.
 export const cities = [
-    {display: "Edmonton", value: "edmonton"},
+    {display: "London", value: "london"},
     {display: "Boston", value: "boston"},
     {display: "Montreal", value: "montreal"},
     {display: "Winnipeg", value: "winnipeg"},
