@@ -108,7 +108,7 @@ function initialState() {
     }
 }
 
-export const TripPlannerCtx = React.createContext({sleepDuration: 725})
+export const TripPlannerCtx = React.createContext({sleepDuration: 500})
 export function TripPlannerProvider({children, value}) {
     return (
         <TripPlannerCtx.Provider value={value}>
